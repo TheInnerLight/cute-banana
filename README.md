@@ -159,6 +159,10 @@ createClockModel = do
       threadDelay 200000
 ```
 
+## Demo
+
+https://github.com/user-attachments/assets/269a8947-8514-4d00-84e6-537050bf25fb
+
 ----
 
 ### Disclaimer
