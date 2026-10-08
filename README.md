@@ -19,8 +19,8 @@ Views are markup defined in xml. They don't have any logic, they just bind to de
 `/views/clock.xml`
 ```xml
 <Window title="Clock">
-  <Label  id="time" text="{clockViewModelTime}" style="font-size: 48pt; font-weight: 600; qproperty-alignment: AlignCenter;"/>
-  <Label  id="date" text="{clockViewModelDate}" style="font-size: 14pt; qproperty-alignment: AlignCenter;"/>
+  <Label id="time" text="{clockViewModelTime}" style="font-size: 48pt; font-weight: 600; qproperty-alignment: AlignCenter;"/>
+  <Label id="date" text="{clockViewModelDate}" style="font-size: 14pt; qproperty-alignment: AlignCenter;"/>
   <Button id="format"  label="{clockViewModelFormatLabel}"  command="{clockViewModelToggleFormat}"/>
   <Button id="seconds" label="{clockViewModelSecondsLabel}" command="{clockViewModelToggleSeconds}"/>
 </Window>
