@@ -33,6 +33,6 @@ createClockModel = do
     updateClock var = forever $ do
       t <- getCurrentTime
       z <- getTimeZone t
-      atomically (modifyTVar' var (\m -> m { clockTime = t, clockZone = z }))
+      atomically $ modifyTVar' var (\m -> m { clockTime = t, clockZone = z })
       threadDelay 200000
 

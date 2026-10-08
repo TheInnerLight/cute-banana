@@ -31,7 +31,7 @@ createClockViewModel model = do
   let m = modelValue model
   formatCmd <- newCommand (pure True)
   secondsCmd <- newCommand (pure True)
-  use24h      <- accumB True (not <$ commandFired formatCmd)
+  use24h <- accumB True (not <$ commandFired formatCmd)
   showSeconds <- accumB True (not <$ commandFired secondsCmd)
   pure ClockViewModel
     { clockViewModelTime          = formatClock <$> m <*> use24h <*> showSeconds
