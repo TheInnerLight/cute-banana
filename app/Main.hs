@@ -11,20 +11,20 @@ import Data.IORef (newIORef)
 import Clock.ClockViewModel (createClockViewModel)
 import Clock.ClockView (mountClock)
 import GHC.IORef ( writeIORef, readIORef )
-import Control.Concurrent.STM (TVar)
-import CuteBanana.Model ( Model, observeWith )
-import Graphics.UI.Qtah.Signal (connect_)
-import qualified Graphics.UI.Qtah.Core.QTimer as QTimer
+import CuteBanana.Qt.Runtime (QTRuntimeConfig(..), runQTMomentIO, registerModel, liftMomentIO)
 
 main :: IO ()
 main = withScopedPtr (getArgs >>= QApplication.new) $ \_ -> do
   modelVar <- createClockModel
   rootRef <- newIORef Nothing
-
-  network <- compile $ do
-    model <- observe modelVar
-    vm <- createClockViewModel model
-    root <- mountClock vm
+  let config = 
+        QTRuntimeConfig
+          { qtRuntimeConfigPollFrequencyMs = 16
+          }
+  network <- compile $ runQTMomentIO config $ do
+    (_, model) <- registerModel modelVar
+    vm <- liftMomentIO $ createClockViewModel model
+    root <- liftMomentIO $ mountClock vm
     liftIO $ writeIORef rootRef (Just root)
   actuate network
 
@@ -34,13 +34,3 @@ main = withScopedPtr (getArgs >>= QApplication.new) $ \_ -> do
     Just root -> do
       QWidget.show root
       QCoreApplication.exec
-
-observe :: Eq s => TVar s -> MomentIO (Model s)
-observe = observeWith (every 16)
-
-every :: Int -> IO () -> IO ()
-every ms action = do
-  timer <- QTimer.new
-  connect_ timer QTimer.timeoutSignal action
-  QTimer.setInterval timer ms
-  QTimer.start timer ms
